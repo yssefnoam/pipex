@@ -12,15 +12,15 @@
 
 NAME = pipex
 
-SRC = pipex.c libft/libft.a
+SRC = pipex.c pipex2.c pipex3.c
+BONUS = pipex_bonus.c pipex2_bonus.c pipex3_bonus.c
 	  
-FLAGS = -Wall -Wextra -Werror
+FLAGS = gcc -Wall -Wextra -Werror
 
-all: $(NAME)
-
-$(NAME):
+all:
+$(NAME): $(SRC)
 	@make -C ./libft
-	@gcc -o $(NAME) $(FLAGS) $(SRC) libft/libft.a -ltermcap
+	@$(CC) -o $(NAME) $(SRC) libft/libft.a
 
 clean:
 	@make clean -C ./libft
@@ -28,5 +28,9 @@ clean:
 fclean: clean
 	@make fclean -C ./libft
 	@rm -rf $(NAME)
+
+bonus:
+	@make -C ./libft
+	@$(CC) -o $(NAME) $(BONUS) libft/libft.a
 
 re: fclean all
