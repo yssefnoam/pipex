@@ -73,8 +73,7 @@ void	search_for_path_and_exec(char *cmd, char **env)
 		free(path);
 		i++;
 	}
-	ft_putstr_fd(argv[0], 1);
-	ft_putstr_fd("command not found\n", 1);
+	put_error("command not found", argv[0]);
 	ft_free_double(paths);
 	ft_free_double(argv);
 	free(str2);
@@ -95,7 +94,7 @@ int	exec_child(int in, int *fd, char *cmd, char **env)
 			close(fd[1]);
 			close(fd[0]);
 		}
-		if (in == 1)
+		if (in == -1)
 		{
 			dup2(fd[0], 0);
 			close(fd[0]);
@@ -112,13 +111,12 @@ int	exec_last_child(int *fd, char *cmd, char *out, char **env)
 	int	writ;
 	int	status;
 	int pid;
-	
 
 	writ = open(out, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 	if (writ == -1)
 		return (put_error(strerror(errno), out));
 	fd[1] = writ; 
-	pid = exec_child(1, fd, cmd, env);
+	pid = exec_child(-1, fd, cmd, env);
 	close(fd[0]);
 	waitpid(pid, &status, 0);
 	return (status);
@@ -142,7 +140,6 @@ int main(int ac, char *argv[], char **env)
 		pcount = ac - 4;
         while (i < pcount)
         {
-			printf("work\n");
             pipe(fd);
             exec_child(in, fd, argv[k++], env);
             close(fd[1]);
