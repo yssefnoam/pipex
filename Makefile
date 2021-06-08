@@ -17,7 +17,8 @@ BONUS = pipex_bonus.c pipex2_bonus.c pipex3_bonus.c
 	  
 FLAGS = gcc -Wall -Wextra -Werror
 
-all:
+all: $(NAME)
+
 $(NAME): $(SRC)
 	@make -C ./libft
 	@$(CC) -o $(NAME) $(SRC) libft/libft.a
@@ -29,7 +30,7 @@ fclean: clean
 	@make fclean -C ./libft
 	@rm -rf $(NAME)
 
-bonus:
+bonus: fclean
 	@make -C ./libft
 	@$(CC) -o $(NAME) $(BONUS) libft/libft.a
 
